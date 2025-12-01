@@ -71,13 +71,10 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    # Link user_id to doctor/patient record
-    if user.role == "Doctor" and record:
+    if record:
         record.user_id = new_user.id
-    elif user.role == "Patient" and record:
-        record.user_id = new_user.id
-    db.commit()
-    db.refresh(record)
+        db.commit()
+        db.refresh(record)
 
     return new_user
 
